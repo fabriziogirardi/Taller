@@ -142,11 +142,12 @@ end;
 procedure contarMenores(arbol: arbolProductos; codigo: integer; var cantidad: integer);
 begin
   if (arbol <> nil) then begin
-    if (arbol^.dato.codigo < codigo) then begin
+    if (arbol^.dato.codigo >= codigo) then begin
+      contarMenores(arbol^.HI, codigo, cantidad);
+    end else begin
       cantidad := cantidad + 1;
+      contarMenores(arbol^.HD, codigo, cantidad);
     end;
-    contarMenores(arbol^.HI, codigo, cantidad);
-    contarMenores(arbol^.HD, codigo, cantidad);
   end;
 end;
 
@@ -166,11 +167,19 @@ end;
 procedure calcularMontoTotalEntreCodigos(arbol: arbolProductos; codigo1, codigo2: integer; var montoTotal: real);
 begin
   if (arbol <> nil) then begin
-    if (arbol^.dato.codigo > codigo1) and (arbol^.dato.codigo < codigo2) then begin
+    if (arbol^.dato.codigo >= codigo1) and (arbol^.dato.codigo <= codigo2) then begin
       montoTotal := montoTotal + arbol^.dato.montoTotal;
+      calcularMontoTotalEntreCodigos(arbol^.HI, codigo1, codigo2, montoTotal);
+      calcularMontoTotalEntreCodigos(arbol^.HD, codigo1, codigo2, montoTotal);
+    end else begin
+      if (arbol^.dato.codigo <= codigo1) then begin
+        calcularMontoTotalEntreCodigos(arbol^.HD, codigo1, codigo2, montoTotal);
+      end else begin
+        if (arbol^.dato.codigo >= codigo2) then begin
+          calcularMontoTotalEntreCodigos(arbol^.HI, codigo1, codigo2, montoTotal);
+        end;
+      end;
     end;
-    calcularMontoTotalEntreCodigos(arbol^.HI, codigo1, codigo2, montoTotal);
-    calcularMontoTotalEntreCodigos(arbol^.HD, codigo1, codigo2, montoTotal);
   end;
 end;
 
@@ -185,6 +194,7 @@ begin
   readln(codigo2);
   montoTotal := 0;
   calcularMontoTotalEntreCodigos(arbol, codigo1, codigo2, montoTotal);
+  writeln('El monto total entre los codigos ', codigo1, ' y ', codigo2, ' es: ', montoTotal:2:2);
 end;
 
 var
