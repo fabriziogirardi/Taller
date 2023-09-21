@@ -172,12 +172,10 @@ begin
       calcularMontoTotalEntreCodigos(arbol^.HI, codigo1, codigo2, montoTotal);
       calcularMontoTotalEntreCodigos(arbol^.HD, codigo1, codigo2, montoTotal);
     end else begin
-      if (arbol^.dato.codigo <= codigo1) then begin
+      if (arbol^.dato.codigo < codigo1) then begin
         calcularMontoTotalEntreCodigos(arbol^.HD, codigo1, codigo2, montoTotal);
       end else begin
-        if (arbol^.dato.codigo >= codigo2) then begin
-          calcularMontoTotalEntreCodigos(arbol^.HI, codigo1, codigo2, montoTotal);
-        end;
+        calcularMontoTotalEntreCodigos(arbol^.HI, codigo1, codigo2, montoTotal);
       end;
     end;
   end;
