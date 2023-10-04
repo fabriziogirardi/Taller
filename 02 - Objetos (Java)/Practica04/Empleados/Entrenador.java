@@ -27,12 +27,12 @@ public class Entrenador extends Empleado{
 
     @Override
     public double calcularEfectividad() {
-        return this.getCampeonatosGanados() / this.getAntiguedad();
+        return (double) this.getCampeonatosGanados() / this.getAntiguedad();
     }
 
     @Override
     public double calcularSueldoACobrar() {
-        double sueldoFinal = this.getSueldo() + (this.getSueldo() * (this.getAntiguedad() / 100));
+        double sueldoFinal = this.getSueldo() + (this.getSueldo() * ((double)this.getAntiguedad() / 100));
         
         if (this.getCampeonatosGanados() > 0) {
             if (this.getCampeonatosGanados() < 5) {

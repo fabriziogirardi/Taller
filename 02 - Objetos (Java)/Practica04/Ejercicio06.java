@@ -4,20 +4,15 @@
  */
 package Practica04;
 
-import Practica04.Empleados.Entrenador;
-import Practica04.Empleados.Jugador;
+import Practica04.Meteorologia.EstacionMeteorologica;
 
 /**
  *
  * @author Fabro
  */
-public class Ejercicio02 {
+public class Ejercicio06 {
     
     public static void main(String[] args) {
-        Jugador j = new Jugador("Pedro Lopez", 5623, 4, 23, 10);
-        Entrenador e = new Entrenador("Juan Montoto", 23563, 7, 9);
-        
-        System.out.println(j);
-        System.out.println(e);
+        EstacionMeteorologica estacionMeteorologica = new EstacionMeteorologica("La Plata", 56, 34);
     }
 }

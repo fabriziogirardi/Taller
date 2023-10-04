@@ -37,15 +37,14 @@ public class Jugador extends Empleado {
     
     @Override
     public double calcularEfectividad() {
-        double res = this.golesAnotados / this.partidosJugados;
-        return res;
+        return (double) this.golesAnotados / this.partidosJugados;
     }
 
     @Override
     public double calcularSueldoACobrar() {
-        double sueldoFinal = this.getSueldo() + (this.getSueldo() * (this.getAntiguedad() / 100));
+        double sueldoFinal = this.getSueldo() + (this.getSueldo() * ((double)this.getAntiguedad() / 100));
         
-        if ((this.golesAnotados / this.partidosJugados) > 0.5) {
+        if (this.calcularEfectividad() > 0.5) {
             sueldoFinal += this.getSueldo();
         }
         
