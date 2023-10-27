@@ -1,0 +1,75 @@
+programa Ejercicio04
+
+procesos
+  proceso limpiarArea
+  variables
+    avenida: numero
+  comenzar
+    repetir 24
+      limpiarAvenida
+      Pos(PosAv + 1, 1)
+    limpiarAvenida
+  fin
+
+  proceso limpiarAvenida
+  variables
+    cuadrante: numero
+  comenzar
+    cuadrante := (PosAv - 1) / 25
+    si ((cuadrante = 0) | (cuadrante = 2))
+      repetir 99
+        limpiarEsquinaDeFlores
+        mover
+      limpiarEsquinaDeFlores
+    sino
+      repetir 99
+        limpiarEsquinaDePapeles
+        mover
+      limpiarEsquinaDePapeles
+  fin
+
+  proceso limpiarEsquinaDeFlores
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+
+  proceso limpiarEsquinaDePapeles
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+
+areas
+  area1: AreaP(1, 1, 25, 100)
+  area2: AreaP(26, 1, 50, 100)
+  area3: AreaP(51, 1, 75, 100)
+  area4: AreaP(76, 1, 100, 100)
+
+robots
+  robot tipo1
+  comenzar
+    limpiarArea
+    Pos(51, 1)
+    limpiarArea
+  fin
+
+  robot tipo2
+  comenzar
+    limpiarArea
+    Pos(76, 1)
+    limpiarArea
+  fin
+
+variables
+  robot1: tipo1
+  robot2: tipo2
+
+comenzar
+  AsignarArea(robot1, area1)
+  AsignarArea(robot2, area2)
+  AsignarArea(robot1, area3)
+  AsignarArea(robot2, area4)
+  Iniciar(robot1, 1, 1)
+  Iniciar(robot2, 26, 1)
+fin
