@@ -1,0 +1,102 @@
+programa Ejercicio02
+
+procesos
+  proceso escalon(ES escalonesConMasFloresQuePapeles: numero)
+  variables
+    alto: numero
+    tmpFlores, tmpPapeles: numero
+  comenzar
+    tmpFlores := 0
+    tmpPapeles := 0
+    Random(alto, 1, 5)
+    repetir (alto)
+      contarFlores(tmpFlores)
+      contarPapeles(tmpPapeles)
+      mover
+    derecha
+    mover
+    contarFlores(tmpFlores)
+    contarPapeles(tmpPapeles)
+    repetir 3
+      derecha
+  fin
+
+  proceso contarFlores(ES flores: numero)
+  variables
+    tmpFlores: numero
+  comenzar
+    tmpFlores := 0
+    mientras (HayFlorEnLaEsquina)
+      tmpFlores := tmpFlores + 1
+      tomarFlor
+    flores := flores + tmpFlores
+    repetir tmpFlores
+      depositarFlor
+  fin
+
+  proceso contarPapeles(ES papeles: numero)
+  variables
+    tmpPapeles: numero
+  comenzar
+    tmpPapeles := 0
+    mientras (HayPapelEnLaEsquina)
+      tmpPapeles := tmpPapeles + 1
+      tomarPapel
+    papeles := papeles + tmpPapeles
+    repetir tmpPapeles
+      depositarPapel
+  fin
+
+  proceso escalera(ES escalonesConMasFloresQuePapeles: numero)
+  comenzar
+    escalonesConMasFloresQuePapeles := 0
+    repetir 4
+      escalon(escalonesConMasFloresQuePapeles)
+  fin
+
+areas
+  ciudad: AreaC(1, 1, 100, 100)
+
+robots
+  robot tipo1
+  variables
+    quienSoy: numero
+    escalonesConMasFloresQuePapeles: numero
+  comenzar
+    RecibirMensaje(quienSoy, robotJefe)
+    escalera(escalonesConMasFloresQuePapeles)
+    EnviarMensaje(quienSoy, robotJefe)
+    EnviarMensaje(escalonesConMasFloresQuePapeles, robotJefe)
+  fin
+
+  robot tipoJefe
+  variables
+    totalEscalonesConMasFloresQuePapeles: numero
+    tmpEscalonesConMasFloresQuePapeles: numero
+  comenzar
+    EnviarMensaje(1, robot1)
+    EnviarMensaje(2, robot2)
+    EnviarMensaje(3, robot3)
+    totalEscalonesConMasFloresQuePapeles := 0
+    repetir 3
+      RecibirMensaje(tmpEscalonesConMasFloresQuePapeles, *)
+      totalEscalonesConMasFloresQuePapeles := totalEscalonesConMasFloresQuePapeles + tmpEscalonesConMasFloresQuePapeles
+    Informar(totalEscalonesConMasFloresQuePapeles)
+  fin
+
+variables
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+  robotJefe: tipoJefe
+
+comenzar
+  AsignarArea(robot1, ciudad)
+  AsignarArea(robot2, ciudad)
+  AsignarArea(robot3, ciudad)
+  AsignarArea(robotJefe, ciudad)
+  Iniciar(robot1, 2, 1)
+  Iniciar(robot2, 7, 1)
+  Iniciar(robot3, 12, 1)
+  Iniciar(robotJefe, 1, 1)
+fin

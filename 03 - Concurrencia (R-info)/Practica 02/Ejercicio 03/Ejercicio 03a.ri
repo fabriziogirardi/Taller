@@ -1,0 +1,114 @@
+programa Ejercicio03
+
+procesos
+  proceso juntarFloresPorTramo(ES floresJuntadas: numero)
+  comenzar
+    repetir 9 
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        floresJuntadas := floresJuntadas + 1
+      mover
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      floresJuntadas := floresJuntadas + 1
+  fin
+
+  proceso juntarPapelesPorTramo(ES papelesJuntados: numero)
+  comenzar
+    repetir 9 
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        papelesJuntados := papelesJuntados + 1
+      mover
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papelesJuntados := papelesJuntados + 1
+  fin
+
+areas
+  area1a: AreaP(1, 1, 10, 1)
+  area2a: AreaP(11, 1, 20, 1)
+  area3a: AreaP(21, 1, 30, 1)
+  area4a: AreaP(31, 1, 40, 1)
+  area1b: AreaP(1, 5, 10, 5)
+  area2b: AreaP(11, 5, 20, 5)
+  area3b: AreaP(21, 5, 30, 5)
+  area4b: AreaP(31, 5, 40, 5)
+
+robots
+  robot tipo1a
+  variables
+    papelesJuntados: numero
+  comenzar
+    derecha
+    papelesJuntados := 0
+    juntarPapelesPorTramo(papelesJuntados)
+    EnviarMensaje(papelesJuntados, robot2a)
+    RecibirMensaje(papelesJuntados, robot2a)
+    Pos(21, 1)
+    juntarPapelesPorTramo(papelesJuntados)
+    EnviarMensaje(papelesJuntados, robot2a)
+  fin
+
+  robot tipo2a
+  variables
+    papelesJuntados: numero
+  comenzar
+    derecha
+    RecibirMensaje(papelesJuntados, robot1a)
+    juntarPapelesPorTramo(papelesJuntados)
+    EnviarMensaje(papelesJuntados, robot1a)
+    RecibirMensaje(papelesJuntados, robot1a)
+    Pos(31, 1)
+    juntarPapelesPorTramo(papelesJuntados)
+    Informar(papelesJuntados)
+  fin
+
+  robot tipo1b
+  variables
+    floresJuntadas: numero
+  comenzar
+    derecha
+    floresJuntadas := 0
+    juntarFloresPorTramo(floresJuntadas)
+    EnviarMensaje(floresJuntadas, robot2b)
+    RecibirMensaje(floresJuntadas, robot2b)
+    Pos(21, 5)
+    juntarFloresPorTramo(floresJuntadas)
+    EnviarMensaje(floresJuntadas, robot2b)
+  fin
+
+  robot tipo2b
+  variables
+    floresJuntadas: numero
+  comenzar
+    derecha
+    RecibirMensaje(floresJuntadas, robot1b)
+    juntarFloresPorTramo(floresJuntadas)
+    EnviarMensaje(floresJuntadas, robot1b)
+    RecibirMensaje(floresJuntadas, robot1b)
+    Pos(31, 5)
+    juntarFloresPorTramo(floresJuntadas)
+    Informar(floresJuntadas)
+  fin
+
+variables
+  robot1a: tipo1a
+  robot2a: tipo2a
+  robot1b: tipo1b
+  robot2b: tipo2b
+
+comenzar
+  AsignarArea(robot1a, area1a)
+  AsignarArea(robot2a, area2a)
+  AsignarArea(robot1a, area3a)
+  AsignarArea(robot2a, area4a)
+  AsignarArea(robot1b, area1b)
+  AsignarArea(robot2b, area2b)
+  AsignarArea(robot1b, area3b)
+  AsignarArea(robot2b, area4b)
+  Iniciar(robot1a, 1, 1)
+  Iniciar(robot2a, 11, 1)
+  Iniciar(robot1b, 1, 5)
+  Iniciar(robot2b, 11, 5)
+fin

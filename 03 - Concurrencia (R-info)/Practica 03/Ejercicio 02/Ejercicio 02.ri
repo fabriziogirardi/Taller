@@ -1,0 +1,128 @@
+programa Ejercicio02
+
+procesos
+  proceso escalonRecolectandoEnVertice(E quienSoy: numero; E tamaño: numero; ES objetosRecolectados: numero)
+  comenzar
+
+    {# Primer tramo del escalon #}
+    repetir tamaño
+      mover
+
+    {# Vertice del escalon. Recolecto y giro #}
+    si (quienSoy = 1)
+      juntarFlores(objetosRecolectados)
+      derecha
+    sino
+      juntarPapeles(objetosRecolectados)
+      repetir 3
+        derecha
+
+    {# Segundo tramo del escalon #}
+    {# Si el tamaño es 1, la proxima esquina es la centra, la bloqueo para evitar colisionar con el otro robot #}
+    si (tamaño = 1)
+      si (quienSoy = 1)
+        BloquearEsquina(PosAv + 1, PosCa)
+        mover
+      sino
+        BloquearEsquina(PosAv - 1, PosCa)
+        mover
+
+      {# Aviso que llegué al centro y me voy #}
+      EnviarMensaje(quienSoy, robotJefe)
+      repetir 2
+        derecha
+      mover
+
+      si (quienSoy = 1)
+        LiberarEsquina(PosAv + 1, PosCa)
+      sino
+        LiberarEsquina(PosAv - 1, PosCa)
+    {# Si el tamaño es mayor a 1, simplemente continúo el escalón #}
+    sino
+      repetir tamaño
+        mover
+      si (quienSoy = 1)
+        repetir 3
+          derecha
+      sino
+        derecha
+  fin
+
+  proceso juntarFlores(ES floresJuntadas: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      floresJuntadas := floresJuntadas + 1
+  fin
+
+  proceso juntarPapeles(ES papelesJuntados: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papelesJuntados := papelesJuntados + 1
+  fin
+
+areas
+  ciudad: AreaC(1, 1, 100, 100)
+
+robots
+  robot tipoRecolector
+  variables
+    quienSoy: numero
+    tamaño: numero
+    objetosRecolectados: numero
+  comenzar
+    RecibirMensaje(quienSoy, robotJefe)
+    tamaño := 5
+    objetosRecolectados := 0
+
+    {# Hago la subida hacia el centro #}
+    mientras (tamaño > 0)
+      escalonRecolectandoEnVertice(quienSoy, tamaño, objetosRecolectados)
+      tamaño := tamaño - 1
+    tamaño := 2
+    {# Hago la subida fuera del centro #}
+    mientras (tamaño < 6)
+      escalonRecolectandoEnVertice(quienSoy, tamaño, objetosRecolectados)
+      tamaño := tamaño + 1
+    
+    {# Informo mis objetos, e informo al jefe que terminé #}
+    Informar(objetosRecolectados)
+    EnviarMensaje(V, robotJefe)
+  fin
+
+  robot tipoJefe
+  variables
+    quien: numero
+    llegoPrimero: numero
+    finalizaron: boolean
+  comenzar
+    {# Configuro los robots #}
+    llegoPrimero := 0
+    EnviarMensaje(1, robot1)
+    EnviarMensaje(2, robot2)
+
+    {# Espero los mensajes de que llegaron al centro #}
+    repetir 2
+      RecibirMensaje(quien, *)
+      si (llegoPrimero = 0)
+        llegoPrimero := quien
+    {# Espero los mensajes de que terminaron, e informo quien llegó primero al centro #}
+    repetir 2
+      RecibirMensaje(finalizaron, *)
+    Informar(llegoPrimero)
+  fin
+
+variables
+  robot1: tipoRecolector
+  robot2: tipoRecolector
+  robotJefe: tipoJefe
+
+comenzar
+  AsignarArea(robot1, ciudad)
+  AsignarArea(robot2, ciudad)
+  AsignarArea(robotJefe, ciudad)
+  Iniciar(robot1, 1, 1)
+  Iniciar(robot2, 31, 1)
+  Iniciar(robotJefe, 15, 1)
+fin

@@ -1,0 +1,119 @@
+programa Ejercicio03
+
+procesos
+  proceso limpiarFloresEnLaEsquina(E quienSoy: numero; E avenida: numero; E calle: numero; ES floresJuntadas: numero; ES continuar: boolean)
+  variables
+    avenidaOriginal, calleOriginal: numero
+  comenzar
+    avenidaOriginal := PosAv
+    calleOriginal := PosCa
+    BloquearEsquina(avenida, calle)
+    Pos(avenida, calle)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      floresJuntadas := floresJuntadas + 1
+    continuar := HayFlorEnLaEsquina
+    Pos(avenidaOriginal, calleOriginal)
+    LiberarEsquina(avenida, calle)
+  fin
+
+areas
+  areaRecolectar: AreaPC(2, 2, 10, 10)
+  areaRecolector1: AreaP(2, 1, 2, 1)
+  areaRecolector2: AreaP(3, 1, 3, 1)
+  areaRecolector3: AreaP(4, 1, 4, 1)
+  areaRecolector4: AreaP(5, 1, 5, 1)
+  areaJefe: AreaP(1, 1, 1, 1)
+
+robots
+  robot tipoRecolector
+  variables
+    quienSoy, avenida, calle: numero
+    floresJuntadas: numero
+    limpiar: boolean
+  comenzar
+    floresJuntadas := 0
+    RecibirMensaje(quienSoy, robotJefe)
+    RecibirMensaje(avenida, robotJefe)
+    RecibirMensaje(calle, robotJefe)
+    limpiar := V
+    mientras (limpiar)
+      limpiarFloresEnLaEsquina(quienSoy, avenida, calle, floresJuntadas, limpiar)
+    EnviarMensaje(quienSoy, robotJefe)
+    EnviarMensaje(floresJuntadas, robotJefe)
+  fin
+
+  robot tipoJefe
+  variables
+    avenidaAlAzar, calleAlAzar: numero
+    maxFlores, maxRobot, tmpFlores, tmpRobot: numero
+    primero, segundo, tercero, cuarto: numero
+  comenzar
+    maxFlores := 0
+    maxRobot := 0
+    tmpFlores := 0
+    Random(avenidaAlAzar, 2, 10)
+    Random(calleAlAzar, 2, 10)
+    EnviarMensaje(1, robot1)
+    EnviarMensaje(2, robot2)
+    EnviarMensaje(3, robot3)
+    EnviarMensaje(4, robot4)
+    EnviarMensaje(avenidaAlAzar, robot1)
+    EnviarMensaje(calleAlAzar, robot1)
+    EnviarMensaje(avenidaAlAzar, robot2)
+    EnviarMensaje(calleAlAzar, robot2)
+    EnviarMensaje(avenidaAlAzar, robot3)
+    EnviarMensaje(calleAlAzar, robot3)
+    EnviarMensaje(avenidaAlAzar, robot4)
+    EnviarMensaje(calleAlAzar, robot4)
+
+    repetir 4
+      RecibirMensaje(tmpRobot, *)
+      si (tmpRobot = 1)
+        RecibirMensaje(tmpFlores, robot1)
+        si (tmpFlores > maxFlores)
+          maxFlores := tmpFlores
+          maxRobot := tmpRobot
+      sino
+        si (tmpRobot = 2)
+          RecibirMensaje(tmpFlores, robot2)
+          si (tmpFlores > maxFlores)
+            maxFlores := tmpFlores
+            maxRobot := tmpRobot
+        sino
+          si (tmpRobot = 3)
+            RecibirMensaje(tmpFlores, robot3)
+            si (tmpFlores > maxFlores)
+              maxFlores := tmpFlores
+              maxRobot := tmpRobot
+          sino
+            RecibirMensaje(tmpFlores, robot4)
+            si (tmpFlores > maxFlores)
+              maxFlores := tmpFlores
+              maxRobot := tmpRobot
+    Informar(maxRobot)
+  fin
+
+variables
+  robot1: tipoRecolector
+  robot2: tipoRecolector
+  robot3: tipoRecolector
+  robot4: tipoRecolector
+  robotJefe: tipoJefe
+
+comenzar
+  AsignarArea(robot1, areaRecolector1)
+  AsignarArea(robot2, areaRecolector2)
+  AsignarArea(robot3, areaRecolector3)
+  AsignarArea(robot4, areaRecolector4)
+  AsignarArea(robot1, areaRecolectar)
+  AsignarArea(robot2, areaRecolectar)
+  AsignarArea(robot3, areaRecolectar)
+  AsignarArea(robot4, areaRecolectar)
+  AsignarArea(robotJefe, areaJefe)
+  Iniciar(robot1, 2, 1)
+  Iniciar(robot2, 3, 1)
+  Iniciar(robot3, 4, 1)
+  Iniciar(robot4, 5, 1)
+  Iniciar(robotJefe, 1, 1)
+fin

@@ -1,0 +1,121 @@
+programa Ejercicio01
+
+procesos
+  proceso limpiarFloresEsquinaRandom(ES floresJuntadas: numero)
+  variables
+    avenidaRandom, calleRandom: numero
+    avenidaOriginal, calleOriginal: numero
+  comenzar
+    avenidaOriginal := PosAv
+    calleOriginal := PosCa
+    Random(avenidaRandom, 1, 5)
+    Random(calleRandom, 1, 10)
+    BloquearEsquina(avenidaRandom, calleRandom)
+    Pos(avenidaRandom, calleRandom)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      floresJuntadas := floresJuntadas + 1
+    Pos(avenidaOriginal, calleOriginal)
+    LiberarEsquina(avenidaRandom, calleRandom)
+  fin
+  
+  proceso limpiarPapelesEsquinaRandom(ES papelesJuntados: numero)
+  variables
+    avenidaRandom, calleRandom: numero
+    avenidaOriginal, calleOriginal: numero
+  comenzar
+    avenidaOriginal := PosAv
+    calleOriginal := PosCa
+    Random(avenidaRandom, 6, 10)
+    Random(calleRandom, 1, 9)
+    BloquearEsquina(avenidaRandom, calleRandom)
+    Pos(avenidaRandom, calleRandom)
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papelesJuntados := papelesJuntados + 1
+    Pos(avenidaOriginal, calleOriginal)
+    LiberarEsquina(avenidaRandom, calleRandom)
+  fin
+
+  proceso depositarFloresJuntadas(E floresJuntadas: numero)
+  variables
+    avenidaOriginal, calleOriginal: numero
+  comenzar
+    avenidaOriginal := PosAv
+    calleOriginal := PosCa
+    BloquearEsquina(10, 10)
+    Pos(10, 10)
+    repetir floresJuntadas
+      depositarFlor
+    Pos(avenidaOriginal, calleOriginal)
+    LiberarEsquina(10, 10)
+  fin
+
+  proceso depositarPapelesJuntados(E papelesJuntados: numero)
+  variables
+    avenidaOriginal, calleOriginal: numero
+  comenzar
+    avenidaOriginal := PosAv
+    calleOriginal := PosCa
+    BloquearEsquina(10, 10)
+    Pos(10, 10)
+    repetir papelesJuntados
+      depositarPapel
+    Pos(avenidaOriginal, calleOriginal)
+    LiberarEsquina(10, 10)
+  fin
+
+areas
+  areaFloreros: AreaPC(1, 1, 5, 10)
+  areaPapeleros: AreaPC(6, 1, 10, 9)
+  areaFlorero1: AreaP(6, 10, 6, 10)
+  areaFlorero2: AreaP(7, 10, 7, 10)
+  areaPapelero1: AreaP(8, 10, 8, 10)
+  areaPapelero2: AreaP(9, 10, 9, 10)
+  areaDeposito: AreaP(10, 10, 10, 10)
+
+robots
+  robot tipoFlorero
+  variables
+    floresJuntadas: numero
+  comenzar
+    floresJuntadas := 0
+    repetir 5
+      limpiarFloresEsquinaRandom(floresJuntadas)
+    depositarFloresJuntadas(floresJuntadas)
+  fin
+
+  robot tipoPapelero
+  variables
+    papelesJuntados: numero
+  comenzar
+    papelesJuntados := 0
+    repetir 3
+      limpiarPapelesEsquinaRandom(papelesJuntados)
+    depositarPapelesJuntados(papelesJuntados)
+  fin
+
+variables
+  robotFlorero1: tipoFlorero
+  robotFlorero2: tipoFlorero
+  robotPapelero1: tipoPapelero
+  robotPapelero2: tipoPapelero
+
+comenzar
+  AsignarArea(robotFlorero1, areaFlorero1)
+  AsignarArea(robotFlorero2, areaFlorero2)
+  AsignarArea(robotFlorero1, areaFloreros)
+  AsignarArea(robotFlorero2, areaFloreros)
+  AsignarArea(robotFlorero1, areaDeposito)
+  AsignarArea(robotFlorero2, areaDeposito)
+  AsignarArea(robotPapelero1, areaPapelero1)
+  AsignarArea(robotPapelero2, areaPapelero2)
+  AsignarArea(robotPapelero1, areaPapeleros)
+  AsignarArea(robotPapelero2, areaPapeleros)
+  AsignarArea(robotPapelero1, areaDeposito)
+  AsignarArea(robotPapelero2, areaDeposito)
+  Iniciar(robotFlorero1, 6, 10)
+  Iniciar(robotFlorero2, 7, 10)
+  Iniciar(robotPapelero1, 8, 10)
+  Iniciar(robotPapelero2, 9, 10)
+fin

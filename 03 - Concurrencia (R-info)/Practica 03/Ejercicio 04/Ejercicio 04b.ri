@@ -1,0 +1,130 @@
+programa Ejercicio04
+
+procesos
+  proceso moverFlor(ES quedanFlores: boolean)
+  variables
+    avenidaOrigen, calleOrigen: numero
+    recolectada: boolean
+  comenzar
+    recolectada := F
+    avenidaOrigen := PosAv
+    calleOrigen := PosCa
+    BloquearEsquina(10, 10)
+    Pos(10, 10)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      recolectada := V
+    quedanFlores := HayFlorEnLaEsquina
+    Pos(avenidaOrigen, calleOrigen)
+    LiberarEsquina(10, 10)
+    si (recolectada)
+      BloquearEsquina(11, 11)
+      Pos(11, 11)
+      depositarFlor
+      Pos(avenidaOrigen, calleOrigen)
+      LiberarEsquina(11, 11)
+  fin
+
+  proceso juntarFloresPorSerUltimo
+  variables
+    avenidaOrigen, calleOrigen: numero
+  comenzar
+    avenidaOrigen := PosAv
+    calleOrigen := PosCa
+    BloquearEsquina(11, 11)
+    Pos(11, 11)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(avenidaOrigen, calleOrigen)
+    LiberarEsquina(11, 11)
+  fin
+
+areas
+  areaJuntar: AreaPC(10, 10, 10, 10)
+  areaDepositar: AreaPC(11, 11, 11, 11)
+  areaRecolector1: AreaP(9, 9, 9, 9)
+  areaRecolector2: AreaP(9, 10, 9, 10)
+  areaRecolector3: AreaP(9, 11, 9, 11)
+  areaRecolector4: AreaP(9, 12, 9, 12)
+  areaJefe: AreaP(1, 1, 1, 1)
+
+robots
+  robot tipoRecolector
+  variables
+    quienSoy: numero
+    quedanFlores: boolean
+    fuiUltimo: boolean
+  comenzar
+    RecibirMensaje(quienSoy, robotJefe)
+    quedanFlores := V
+    mientras (quedanFlores)
+      moverFlor(quedanFlores)
+    EnviarMensaje(quienSoy, robotJefe)
+    RecibirMensaje(fuiUltimo, robotJefe)
+    si (fuiUltimo)
+      juntarFloresPorSerUltimo
+  fin
+
+  robot tipoJefe
+  variables
+    quienEs: numero
+  comenzar
+    EnviarMensaje(1, robotRecolector1)
+    EnviarMensaje(2, robotRecolector2)
+    EnviarMensaje(3, robotRecolector3)
+    EnviarMensaje(4, robotRecolector4)
+
+    repetir 4
+      RecibirMensaje(quienEs, *)
+    
+    Informar(quienEs)
+    si (quienEs = 1)
+      EnviarMensaje(V, robotRecolector1)
+      EnviarMensaje(F, robotRecolector2)
+      EnviarMensaje(F, robotRecolector3)
+      EnviarMensaje(F, robotRecolector4)
+    sino
+      si (quienEs = 2)
+        EnviarMensaje(F, robotRecolector1)
+        EnviarMensaje(V, robotRecolector2)
+        EnviarMensaje(F, robotRecolector3)
+        EnviarMensaje(F, robotRecolector4)
+      sino
+        si (quienEs = 3)
+          EnviarMensaje(F, robotRecolector1)
+          EnviarMensaje(F, robotRecolector2)
+          EnviarMensaje(V, robotRecolector3)
+          EnviarMensaje(F, robotRecolector4)
+        sino
+          EnviarMensaje(F, robotRecolector1)
+          EnviarMensaje(F, robotRecolector2)
+          EnviarMensaje(F, robotRecolector3)
+          EnviarMensaje(V, robotRecolector4)
+  fin
+
+variables
+  robotRecolector1: tipoRecolector
+  robotRecolector2: tipoRecolector
+  robotRecolector3: tipoRecolector
+  robotRecolector4: tipoRecolector
+  robotJefe: tipoJefe
+comenzar
+  AsignarArea(robotRecolector1, areaRecolector1)
+  AsignarArea(robotRecolector2, areaRecolector2)
+  AsignarArea(robotRecolector3, areaRecolector3)
+  AsignarArea(robotRecolector4, areaRecolector4)
+  AsignarArea(robotRecolector1, areaJuntar)
+  AsignarArea(robotRecolector2, areaJuntar)
+  AsignarArea(robotRecolector3, areaJuntar)
+  AsignarArea(robotRecolector4, areaJuntar)
+  AsignarArea(robotRecolector1, areaDepositar)
+  AsignarArea(robotRecolector2, areaDepositar)
+  AsignarArea(robotRecolector3, areaDepositar)
+  AsignarArea(robotRecolector4, areaDepositar)
+  AsignarArea(robotJefe, areaJefe)
+  Iniciar(robotRecolector1, 9, 9)
+  Iniciar(robotRecolector2, 9, 10)
+  Iniciar(robotRecolector3, 9, 11)
+  Iniciar(robotRecolector4, 9, 12)
+  Iniciar(robotJefe, 1, 1)
+fin

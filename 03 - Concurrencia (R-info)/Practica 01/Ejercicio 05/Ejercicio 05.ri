@@ -1,0 +1,80 @@
+programa Ejercicio05
+
+procesos
+  proceso limpiarAvenida(E cuantasCuadras: numero)
+  comenzar
+    repetir (cuantasCuadras - 1)
+      limpiarEsquina
+      mover
+    limpiarEsquina
+  fin
+
+  proceso limpiarEsquina
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+
+areas
+  area1robot1: AreaP(1, 75, 10, 75)
+  area2robot1: AreaP(1, 80, 10, 80)
+  area1robot2: AreaP(75, 81, 75, 100)
+  area2robot2: AreaP(80, 81, 80, 100)
+  area1robot3: AreaP(71, 15, 100, 15)
+  area2robot3: AreaP(71, 10, 100, 10)
+  area1robot4: AreaP(10, 1, 10, 10)
+  area2robot4: AreaP(15, 1, 15, 10)
+
+robots
+  robot tipo1
+  comenzar
+    derecha
+    limpiarAvenida(10)
+    Pos(1, 80)
+    limpiarAvenida(10)
+  fin
+
+  robot tipo2
+  comenzar
+    limpiarAvenida(20)
+    Pos(80, 81)
+    limpiarAvenida(20)
+  fin
+
+  robot tipo3
+  comenzar
+    derecha
+    limpiarAvenida(30)
+    Pos(71, 10)
+    limpiarAvenida(30)
+  fin
+
+  robot tipo4
+  comenzar
+    limpiarAvenida(10)
+    Pos(15, 1)
+    limpiarAvenida(10)
+  fin
+
+variables
+  robot1: tipo1
+  robot2: tipo2
+  robot3: tipo3
+  robot4: tipo4
+
+comenzar
+  AsignarArea(robot1, area1robot1)
+  AsignarArea(robot1, area2robot1)
+  AsignarArea(robot2, area1robot2)
+  AsignarArea(robot2, area2robot2)
+  AsignarArea(robot3, area1robot3)
+  AsignarArea(robot3, area2robot3)
+  AsignarArea(robot4, area1robot4)
+  AsignarArea(robot4, area2robot4)
+  Iniciar(robot1, 1, 75)
+  Iniciar(robot2, 75, 81)
+  Iniciar(robot3, 71, 15)
+  Iniciar(robot4, 10, 1)
+fin
